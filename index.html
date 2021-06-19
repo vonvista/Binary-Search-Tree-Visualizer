@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/addons/p5.sound.min.js"></script>
+
+    <title>Binary Search Tree Visualizer</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    
+    <meta name="description" content="Stack and Queue Visualizer/Simulator web app">
+    <meta name="keywords" content="Stacks, Queues, Visualizer, Algorithms,Data Structures, Simulator">
+    <meta name="author" content="Von Vista">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+  <body>
+    <div class="controls" style="align-items: baseline;margin:0px;"> 
+        <h1>Binary Search Tree v2</h1>
+        <p>//Von Vista</p>
+        <a href="https://github.com/VonVista">> Github</a>
+    </div>
+    <div id="controlPanel" class="controlsParent">
+        <div class="controls"> 
+            <input type="text" id="functionElement" placeholder="Input value"
+            class="input_field" style="background-color:#7e2929"></input>
+            <button onClick = handleInsert() id="pushButton" style="background-color:#7e2929">Insert</button>
+            <button onClick = handleSearch() id="pushButton" style="background-color:#7e2929">Search</button>
+            <button onClick = handleRemove() id="pushButton" style="background-color:#7e2929">Delete</button>
+        </div>
+        <div class="controls"> 
+          <button onClick = handleInorder() id="queueButton" style="background-color:#797e29">Inorder</button>
+        </div>
+    </div>
+
+    <script src="sketch.js"></script>
+    <div id="sketchHolder"></div>
+  </body>
+</html>
