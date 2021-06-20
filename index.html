@@ -22,25 +22,34 @@
     </div>
     <div id="controlPanel" class="controlsParent">
         <div class="controls"> 
-            <p>Functions </p>
-            <input type="text" id="functionElement" placeholder="Input value"
-            class="input_field" style="background-color:#7e2929"></input>
-            <button onClick = handleInsert() id="pushButton" style="background-color:#7e2929">Insert</button>
-            <button onClick = handleSearch() id="pushButton" style="background-color:#7e2929">Search</button>
-            <button onClick = handleRemove() id="pushButton" style="background-color:#7e2929">Delete</button>
+          <p>Functions </p>
+          <input type="text" id="functionElement" placeholder="Input value"
+          class="input_field" style="background-color:#7e2929"></input>
+          <button onClick = handleInsert() id="pushButton" style="background-color:#7e2929">Insert</button>
+          <button onClick = handleSearch() id="pushButton" style="background-color:#7e2929">Search</button>
+          <button onClick = handleRemove() id="pushButton" style="background-color:#7e2929">Delete</button>
 
-            <p>Adjustments </p>
-            <input type="number" id="heightDistAdj" placeholder="Input value"
-            class="num_field" min="1" max="100" value="80" style="background-color:#7e2929"></input>
-            <input type="number" id="widthDistAdj" placeholder="Input value"
-            class="num_field" min="0" max="1000" value="40" step="10" style="background-color:#7e2929"></input>
+          <p style="margin-left:10px;">Adjustments </p>
+          <img src="assets/height.png" height=20 fill=white>
+          <input type="number" id="heightDistAdj" placeholder="Input value"
+          class="num_field" min="1" max="100" value="80" style="background-color:#67297e"></input>
+          <img src="assets/width.png" height=20 fill=white>
+          <input type="number" id="widthDistAdj" placeholder="Input value"
+          class="num_field" min="0" max="1000" value="40" step="10" style="background-color:#67297e"></input>
 
-            <button onClick = "handleAdj()" id="iba" style="background-color:#7e2929">Adjust</button>
+          <button onClick = "handleAdj()" id="iba" style="background-color:#67297e">Adjust</button>
         </div>
         <div class="controls"> 
+          <p>Traversals</p>
           <button onClick = handleInorder() id="queueButton" style="background-color:#797e29">Inorder</button>
           <button onClick = handlePreorder() id="queueButton" style="background-color:#797e29">Preorder</button>
           <button onClick = handlePostorder() id="queueButton" style="background-color:#797e29">Postorder</button>
+
+          <p class="controlsTitle" style="margin-left:10px;">Animation Speed</p>
+          <input type="range" oninput=handleSliderAnimChange() min="1" max="15" step="0.25" value="3" class="slider" id="myRange">
+          <p class="controlsTitle" id=animSlider></p>
+
+          <button onClick = handleLoadExample() id="queueButton" style="background-color:#7e5729; margin-left:10px;">Load Example</button>
         </div>
     </div>
 

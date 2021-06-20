@@ -476,6 +476,7 @@ class BinarySearchTree {
   
   async inOrder() {
     this.visReset()
+    sNode.image = traversal_icon
     prevArrow = sNode
     tempArrow = null
     await this.inOrderHelper(this.root);
@@ -484,6 +485,7 @@ class BinarySearchTree {
 
   async preOrder() {
     this.visReset()
+    sNode.image = traversal_icon
     prevArrow = sNode
     tempArrow = null
     await this.preOrderHelper(this.root);
@@ -492,6 +494,7 @@ class BinarySearchTree {
 
   async postOrder() {
     this.visReset()
+    sNode.image = traversal_icon
     prevArrow = sNode
     tempArrow = null
     await this.postOrderHelper(this.root);
@@ -575,13 +578,12 @@ class BinarySearchTree {
   }
 
   async postOrderHelper(root) {
-    
     if (root != null) {
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
       await this.postOrderHelper(root.children[0]);
       await sNode.movePos(root.x, root.y + boxSize/2 + 40)
 
       await this.postOrderHelper(root.children[1]);
-      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
 
       await sNode.movePos(root.x, root.y + boxSize/2 + 40)
 
@@ -641,9 +643,7 @@ function handleInsert() {
   //stringValue = this.value()
   //document.getElementById("myText").value = "Johnny Bravo";
   let element = document.getElementById("functionElement").value
-  console.log(element)
-  if(element == "" || element == null) {
-    console.log(element)
+  if(isNaN(element) || element == "" || element == null) {
     return
   }
   tree.insert(parseInt(element))
@@ -653,8 +653,7 @@ function handleSearch() {
   //stringValue = this.value()
   //document.getElementById("myText").value = "Johnny Bravo";
   let element = document.getElementById("functionElement").value
-  if(element == "" || element == null) {
-    
+  if(isNaN(element) || element == "" || element == null) {
     return
   }
   tree.search(parseInt(element))
@@ -663,7 +662,13 @@ function handleSearch() {
 function handleRemove() { 
   //stringValue = this.value()
   //document.getElementById("myText").value = "Johnny Bravo";
+  
   let element = document.getElementById("functionElement").value
+  console.log(element == "")
+  if(isNaN(element)){
+    return
+  }
+
   if(element == "" || element == null) {
     tree.remove(tree.root)
     return
@@ -683,6 +688,33 @@ function handlePostorder() {
   tree.postOrder();
 }
 
+document.getElementById("animSlider").innerHTML = document.getElementById("myRange").value
+animSpeed = document.getElementById("myRange").value
+
+function handleSliderAnimChange() {
+  output = document.getElementById("myRange").value
+  //document.getElementById("animSlider").innerHTML = output * 50
+  document.getElementById("animSlider").innerHTML = output
+  animSpeed = output
+  //var output = 
+  //output.innerHTML = slider.value; // Display the default slider value
+}
+
+async function handleLoadExample() {
+  await tree.insert(25);
+  await tree.insert(20);
+  await tree.insert(36);
+  await tree.insert(10);
+  await tree.insert(22);
+  await tree.insert(30);
+  await tree.insert(40);
+  await tree.insert(28);
+  await tree.insert(5);
+  await tree.insert(12);
+  await tree.insert(38);
+  await tree.insert(48);
+}
+
 var prevNode = null
 var curTraversal = []
 var treeNodes = []
@@ -691,11 +723,12 @@ var arrows = []
 var sNode;
 var prevArrow, tempArrow;
 
-var search_icon_base, search_icon_notFound, search_icon_found;
+var search_icon_base, search_icon_notFound, search_icon_found, traversal_icon;
 function preload() {
   search_icon_base = loadImage('assets/search_1.png');
   search_icon_notFound = loadImage('assets/search_2.png');
   search_icon_found = loadImage('assets/search_3.png');
+  traversal_icon = loadImage('assets/traverse_1.png');
 }
 
 async function setup() {
@@ -723,21 +756,6 @@ async function setup() {
   // await tree.insert(15);
   // await tree.insert(1);
   // await tree.insert(10);
-
-
-  await tree.insert(25);
-  await tree.insert(20);
-  await tree.insert(36);
-  await tree.insert(10);
-  await tree.insert(22);
-  await tree.insert(30);
-  await tree.insert(40);
-  await tree.insert(28);
-  await tree.insert(5);
-  await tree.insert(12);
-  await tree.insert(38);
-  await tree.insert(48);
-
   
   console.log(edges)
 }
@@ -762,8 +780,8 @@ function draw() {
 function mousePressed() {
   console.log(mouseX, mouseY);
   
-  
 }
 
-
-
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
