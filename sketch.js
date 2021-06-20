@@ -25,18 +25,24 @@ class Arrow {
   constructor(start, end){
     this.start = start
     this.end = end
+    this.endx = start.x
+    this.endy = start.y
+    this.endxFin = end.x
+    this.endyFin = end.y
     this.offsetY = boxSize/2
   }
 
   draw(){
+    this.endx = this.endx + (this.endxFin - this.endx) * easing
+    this.endy = this.endy + (this.endyFin - this.endy) * easing
     stroke(YELLOW)
     fill(YELLOW)
     strokeWeight(3);
-    line(this.start.x, this.start.y + this.offsetY, this.end.x, this.end.y + this.offsetY)
+    line(this.start.x, this.start.y + this.offsetY, this.endx, this.endy + this.offsetY)
     push() //start new drawing state
     var offset = 8
-    var angle = atan2(this.start.y - this.end.y, this.start.x - this.end.x);
-    translate((this.start.x + this.end.x)/2, (this.start.y + this.end.y)/2 + this.offsetY);
+    var angle = atan2(this.start.y - this.endy, this.start.x - this.endx);
+    translate((this.start.x + this.endx)/2, (this.start.y + this.endy)/2 + this.offsetY);
     rotate(angle-HALF_PI); //rotates the arrow point
     triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
     pop();
@@ -126,7 +132,7 @@ class BinarySearchTree {
 
     /* insert */
   async insert(value) {
-    
+    this.visReset()
     console.log(this);
     // create node from value
     var node = new Node(value);
@@ -199,6 +205,7 @@ class BinarySearchTree {
 
   async search(data) 
   { 
+    this.visReset()
     console.log("NANDITO")
     sNode.image = search_icon_base
     await this.searchNode(this.root, data);
@@ -273,6 +280,7 @@ class BinarySearchTree {
 
   async remove(data) 
   { 
+    this.visReset()
     this.root = await this.removeNode(this.root, data, treeWidthDist/2, 0 + treeHeightOffset); 
     
     var temp = await this.adjustTree(this.root, treeWidthDist/4, 0 + treeHeightOffset, treeWidthDist/2);
@@ -453,6 +461,7 @@ class BinarySearchTree {
   }
 
   async adjustTree(root, curWidth, curHeight, prevX){
+    this.visReset()
     console.log(curHeight)
     if (root != null) {
       root.movePos(prevX + treeWidthOffset, curHeight)
@@ -466,14 +475,30 @@ class BinarySearchTree {
   }
   
   async inOrder() {
+    this.visReset()
     prevArrow = sNode
     tempArrow = null
     await this.inOrderHelper(this.root);
-    await this.inOrderFinal()
-
+    await this.traversalFinal()
   }
 
-  async inOrderFinal() {
+  async preOrder() {
+    this.visReset()
+    prevArrow = sNode
+    tempArrow = null
+    await this.preOrderHelper(this.root);
+    await this.traversalFinal()
+  }
+
+  async postOrder() {
+    this.visReset()
+    prevArrow = sNode
+    tempArrow = null
+    await this.postOrderHelper(this.root);
+    await this.traversalFinal()
+  }
+
+  async traversalFinal() {
     prevNode.color = BASE_BLUE;
     sNode.movePos(windowWidth/2, -60);
   }
@@ -513,30 +538,103 @@ class BinarySearchTree {
       await sNode.movePos(root.x, root.y + boxSize/2 + 40)
     }
   }
+
+  async preOrderHelper(root) {
+    
+    if (root != null) {
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
+
+      if(tempArrow == null){
+        tempArrow = root
+        root.color = LIGHT_YELLOW;
+      }
+      else {
+        arrows.push(new Arrow(tempArrow, root));
+        tempArrow.color = BASE_BLUE;
+        
+        tempArrow = root;
+        root.color = LIGHT_YELLOW;
+      }
+      
+      console.log(root.value);
+
+
+      if(prevNode == null){
+        prevNode = root;
+      }
+      else {
+        prevNode = root;
+      }
+
+      await this.preOrderHelper(root.children[0]);
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
+
+      await this.preOrderHelper(root.children[1]);
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
+    }
+  }
+
+  async postOrderHelper(root) {
+    
+    if (root != null) {
+      await this.postOrderHelper(root.children[0]);
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
+
+      await this.postOrderHelper(root.children[1]);
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
+
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
+
+      if(tempArrow == null){
+        tempArrow = root
+        root.color = LIGHT_YELLOW;
+      }
+      else {
+        arrows.push(new Arrow(tempArrow, root));
+        tempArrow.color = BASE_BLUE;
+        
+        tempArrow = root;
+        root.color = LIGHT_YELLOW;
+      }
+      
+      console.log(root.value);
+
+
+      if(prevNode == null){
+        prevNode = root;
+      }
+      else {
+        prevNode = root;
+      }
+    }
+  }
+
+  visReset() {
+    arrows = []
+  }
 }
 
 function handleAdj() { 
   console.log(tree.root)
   console.log("PUNTA KA DITO POTEK")
-  //console.log()
-  // treeHeightDist = document.getElementById("heightDistAdj").value
-  // treeWidthDist = windowWidth + (-1 * document.getElementById("widthDistAdj").value)
+  treeHeightDist = parseInt(document.getElementById("heightDistAdj").value)
+  treeWidthDist = windowWidth + (-1 * parseInt(document.getElementById("widthDistAdj").value))
   // console.log(document.getElementById("heightDistAdj").value)
   // console.log(treeWidthDist/4)
   tree.adjustTree(tree.root, treeWidthDist/4, 0 + treeHeightOffset, treeWidthDist/2);
 }
 
-function handleHeightAdj() {
-  var output = parseInt(document.getElementById("heightDistAdj").value)
-  treeHeightDist = output
-  console.log(document.getElementById("heightDistAdj").value)
-}
+// function handleHeightAdj() {
+//   var output = parseInt(document.getElementById("heightDistAdj").value)
+//   treeHeightDist = output
+//   console.log(document.getElementById("heightDistAdj").value)
+// }
 
-function handleWidthAdj() {
-  var output = parseInt(document.getElementById("widthDistAdj").value)
-  treeWidthDist = windowWidth + (-1 * output)
+// function handleWidthAdj() {
+//   var output = parseInt(document.getElementById("widthDistAdj").value)
+//   treeWidthDist = windowWidth + (-1 * output)
   
-}
+// }
 
 
 function handleInsert() { 
@@ -575,7 +673,14 @@ function handleRemove() {
 
 function handleInorder() { 
   tree.inOrder();
-  console.log(tree)
+}
+
+function handlePreorder() { 
+  tree.preOrder();
+}
+
+function handlePostorder() { 
+  tree.postOrder();
 }
 
 var prevNode = null
@@ -611,25 +716,28 @@ async function setup() {
   textAlign(CENTER, CENTER)
   imageMode(CENTER);
   
-  await tree.insert(12);
-  await tree.insert(7);
+  // await tree.insert(12);
+  // await tree.insert(7);
+  // await tree.insert(20);
+  // await tree.insert(50);
+  // await tree.insert(15);
+  // await tree.insert(1);
+  // await tree.insert(10);
+
+
+  await tree.insert(25);
   await tree.insert(20);
-  await tree.insert(50);
-  await tree.insert(15);
-  await tree.insert(1);
+  await tree.insert(36);
   await tree.insert(10);
+  await tree.insert(22);
+  await tree.insert(30);
+  await tree.insert(40);
+  await tree.insert(28);
+  await tree.insert(5);
+  await tree.insert(12);
+  await tree.insert(38);
+  await tree.insert(48);
 
-  arrowTest = new Arrow(treeNodes[0], treeNodes[1])
-
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
-  // await tree.remove(tree.root);
   
   console.log(edges)
 }
