@@ -1,20 +1,47 @@
-var animSpeed = 6
+var animSpeed = 3
 
 const easing = 0.05 * animSpeed
 const boxSize = 30;
-const treeHeightDist = 80;
+
 const treeHeightOffset = 30;
 const controlsHeight = document.getElementById("controlPanel").offsetHeight 
 
-
+var treeWidthDist = -40;
+var treeWidthOffset = 0;
+var treeHeightDist = 80;
 
 //COLORS
 
 const YELLOW = [255, 242, 0]
 const BASE_BLUE = [41, 89, 126]
+const LIGHT_YELLOW = [171, 176, 62]
 
 function sleep(ms){
   return new Promise(resolve => setTimeout(resolve,ms));
+}
+
+class Arrow {
+
+  constructor(start, end){
+    this.start = start
+    this.end = end
+    this.offsetY = boxSize/2
+  }
+
+  draw(){
+    stroke(YELLOW)
+    fill(YELLOW)
+    strokeWeight(3);
+    line(this.start.x, this.start.y + this.offsetY, this.end.x, this.end.y + this.offsetY)
+    push() //start new drawing state
+    var offset = 8
+    var angle = atan2(this.start.y - this.end.y, this.start.x - this.end.x);
+    translate((this.start.x + this.end.x)/2, (this.start.y + this.end.y)/2 + this.offsetY);
+    rotate(angle-HALF_PI); //rotates the arrow point
+    triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
+    pop();
+  }
+  
 }
 
 class Edge {
@@ -24,8 +51,9 @@ class Edge {
   }
   draw() {
     stroke(255)
-    line(this.startnode.x + boxSize/2, this.startnode.y + boxSize/2, 
-      this.endnode.x + boxSize/2, this.endnode.y + boxSize/2)
+    strokeWeight(1);
+    line(this.startnode.x, this.startnode.y + boxSize/2, 
+      this.endnode.x, this.endnode.y + boxSize/2)
   }
 
 
@@ -42,12 +70,13 @@ class Node {
     this.color = BASE_BLUE;
   }
   draw() {
+    strokeWeight(1)
     stroke(28, 42, 53)
     fill(this.color[0], this.color[1], this.color[2])
-    rect(this.x + boxSize/2, this.y + boxSize/2, boxSize, boxSize)
+    rect(this.x, this.y + boxSize/2, boxSize, boxSize)
     noStroke()
     fill(255)
-    text(this.value, this.x + boxSize/2, this.y + boxSize/2)
+    text(this.value, this.x, this.y + boxSize/2)
   }
   async movePos(newX, newY) {
     console.log("OLD X: " + this.x + ",Y: " + this.y)
@@ -66,17 +95,17 @@ class Node {
 class searchNode {
   constructor() {
     this.x = windowWidth/2
-    this.y = -50
+    this.y = -70
     this.image = search_icon_base
   }
   draw() {
-    image(this.image, this.x, this.y, 50, 50);
+    image(this.image, this.x, this.y, 40, 40);
   }
 
   async movePos(newX, newY) {
     // console.log("OLD X: " + this.x + ",Y: " + this.y)
     // console.log("X: " + newX + ",Y: " + newY)
-    for(let i = 0; i <= 150; i++){
+    for(let i = 0; i <= (150 / animSpeed); i++){
       this.x = this.x + (newX - this.x) * easing
       this.y = this.y + (newY - this.y) * easing
       await sleep(2)
@@ -90,9 +119,9 @@ class searchNode {
 //VARS FOR BINARY SEARCH TREE
 
 class BinarySearchTree {
-  constructor(value) {
-    this.root = new Node(value);
-    treeNodes.push(this.root)
+  constructor() {
+    this.root = null;
+    
   }
 
     /* insert */
@@ -102,26 +131,33 @@ class BinarySearchTree {
     // create node from value
     var node = new Node(value);
     treeNodes.push(node)
-    // if the tree's root is null, set the root to the new node
-    if (this.root == null || this.root.value == null || this.root.value === "e") {
-        //console.log("Root is null");
-        this.root = node;
-    }
+    
+
     var curHeight = 0 + treeHeightOffset;
-    var curWidth = windowWidth;
+    var curWidth = treeWidthDist;
     var current = this.root;
     node.x = curWidth/2
     node.y = -30
+
+    // if the tree's root is null, set the root to the new node
+    if (this.root == null) {
+      console.log("Root is null");
+      this.root = node;
+      await node.movePos(curWidth/2, curHeight);
+      return
+    }
 
     console.log("+++++++++++++++++++")
     console.log("value:" + value)
     while (current) {
       curHeight += treeHeightDist
       curWidth /= 2
+      console.log(treeHeightDist)
+      console.log(curHeight)
 
       // If tree contains value return
       if (current.value == value) {
-        await node.movePos(windowWidth/2, -60);
+        await node.movePos(treeWidthDist/2, -60);
         treeNodes.pop()
         return;
       }
@@ -166,7 +202,6 @@ class BinarySearchTree {
     console.log("NANDITO")
     sNode.image = search_icon_base
     await this.searchNode(this.root, data);
-    
   } 
   
   // Method to remove node with a  
@@ -177,12 +212,17 @@ class BinarySearchTree {
 
   async searchNode(node, key) 
   { 
-    await sNode.movePos(node.x + boxSize/2, node.y + boxSize/2 + 50)
-    console.log(node.value);    
     // if the root is null then tree is  
     // empty 
-    // if(node === "null") 
-    //     return null; 
+    if(node == null) {
+      sNode.image = search_icon_notFound
+      await sleep(2000)
+      sNode.movePos(windowWidth/2, -60);
+      return null; 
+    }
+
+    await sNode.movePos(node.x, node.y + boxSize/2 + 40)
+    console.log(node.value);    
   
     // if data to be delete is less than  
     // roots data then move to left subtree 
@@ -209,6 +249,8 @@ class BinarySearchTree {
     else
     { 
       sNode.image = search_icon_found
+      await sleep(2000)
+      sNode.movePos(windowWidth/2, -60);
     }
   }
 
@@ -231,9 +273,11 @@ class BinarySearchTree {
 
   async remove(data) 
   { 
-    this.root = await this.removeNode(this.root, data, windowWidth/2, 0 + treeHeightOffset); 
-    console.log(this);
-    await this.adjustTree(this.root, windowWidth/4, 0 + treeHeightOffset, windowWidth/2);
+    this.root = await this.removeNode(this.root, data, treeWidthDist/2, 0 + treeHeightOffset); 
+    
+    var temp = await this.adjustTree(this.root, treeWidthDist/4, 0 + treeHeightOffset, treeWidthDist/2);
+    console.log("DONE");
+    return 
   } 
 
   // Method to remove node with a  
@@ -409,32 +453,54 @@ class BinarySearchTree {
   }
 
   async adjustTree(root, curWidth, curHeight, prevX){
-    console.log(root)
+    console.log(curHeight)
     if (root != null) {
-      await root.movePos(prevX, curHeight)
+      root.movePos(prevX + treeWidthOffset, curHeight)
       console.log(root.value);
       console.log(curWidth + curWidth/2)
   
-      await this.adjustTree(root.children[0], curWidth/2, curHeight + treeHeightDist, prevX - curWidth);
+      this.adjustTree(root.children[0], curWidth/2, curHeight + treeHeightDist, prevX - curWidth);
   
-      await this.adjustTree(root.children[1], curWidth/2, curHeight + treeHeightDist, prevX + curWidth);
+      this.adjustTree(root.children[1], curWidth/2, curHeight + treeHeightDist, prevX + curWidth);
     }
   }
   
-  inOrder() {
-    curTraversal = []
-    this.inOrderHelper(this.root);
-    //console.log(curTraversal);
+  async inOrder() {
+    prevArrow = sNode
+    tempArrow = null
+    await this.inOrderHelper(this.root);
+    await this.inOrderFinal()
 
   }
 
-  inOrderHelper(root) {
+  async inOrderFinal() {
+    prevNode.color = BASE_BLUE;
+    sNode.movePos(windowWidth/2, -60);
+  }
+
+
+  async inOrderHelper(root) {
     
     if (root != null) {
-      this.inOrderHelper(root.children[0]);
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
 
+      await this.inOrderHelper(root.children[0]);
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
+
+      if(tempArrow == null){
+        tempArrow = root
+        root.color = LIGHT_YELLOW;
+      }
+      else {
+        arrows.push(new Arrow(tempArrow, root));
+        tempArrow.color = BASE_BLUE;
+        
+        tempArrow = root;
+        root.color = LIGHT_YELLOW;
+      }
+      
       console.log(root.value);
-      curTraversal.push(root);
+
 
       if(prevNode == null){
         prevNode = root;
@@ -443,17 +509,45 @@ class BinarySearchTree {
         prevNode = root;
       }
 
-      this.inOrderHelper(root.children[1]);
+      await this.inOrderHelper(root.children[1]);
+      await sNode.movePos(root.x, root.y + boxSize/2 + 40)
     }
   }
 }
 
+function handleAdj() { 
+  console.log(tree.root)
+  console.log("PUNTA KA DITO POTEK")
+  //console.log()
+  // treeHeightDist = document.getElementById("heightDistAdj").value
+  // treeWidthDist = windowWidth + (-1 * document.getElementById("widthDistAdj").value)
+  // console.log(document.getElementById("heightDistAdj").value)
+  // console.log(treeWidthDist/4)
+  tree.adjustTree(tree.root, treeWidthDist/4, 0 + treeHeightOffset, treeWidthDist/2);
+}
+
+function handleHeightAdj() {
+  var output = parseInt(document.getElementById("heightDistAdj").value)
+  treeHeightDist = output
+  console.log(document.getElementById("heightDistAdj").value)
+}
+
+function handleWidthAdj() {
+  var output = parseInt(document.getElementById("widthDistAdj").value)
+  treeWidthDist = windowWidth + (-1 * output)
+  
+}
 
 
 function handleInsert() { 
   //stringValue = this.value()
   //document.getElementById("myText").value = "Johnny Bravo";
   let element = document.getElementById("functionElement").value
+  console.log(element)
+  if(element == "" || element == null) {
+    console.log(element)
+    return
+  }
   tree.insert(parseInt(element))
 }
 
@@ -461,6 +555,10 @@ function handleSearch() {
   //stringValue = this.value()
   //document.getElementById("myText").value = "Johnny Bravo";
   let element = document.getElementById("functionElement").value
+  if(element == "" || element == null) {
+    
+    return
+  }
   tree.search(parseInt(element))
 }
 
@@ -468,6 +566,10 @@ function handleRemove() {
   //stringValue = this.value()
   //document.getElementById("myText").value = "Johnny Bravo";
   let element = document.getElementById("functionElement").value
+  if(element == "" || element == null) {
+    tree.remove(tree.root)
+    return
+  }
   tree.remove(parseInt(element))
 }
 
@@ -480,7 +582,9 @@ var prevNode = null
 var curTraversal = []
 var treeNodes = []
 var edges = []
+var arrows = []
 var sNode;
+var prevArrow, tempArrow;
 
 var search_icon_base, search_icon_notFound, search_icon_found;
 function preload() {
@@ -494,29 +598,39 @@ async function setup() {
   let cnv = createCanvas(windowWidth, windowHeight - controlsHeight);
   cnv.parent("sketchHolder");
   console.log(cnv)
-
-  console.log(windowWidth)
+  
+  treeWidthDist += windowWidth
+  console.log(treeWidthDist)
 
   sNode = new searchNode()
-  tree = new BinarySearchTree(25)
-  tree.root.x = windowWidth/2
-  tree.root.y = treeHeightOffset
+  tree = new BinarySearchTree()
+  // tree.root.x = windowWidth/2
+  // tree.root.y = treeHeightOffset
 
   rectMode(CENTER)
   textAlign(CENTER, CENTER)
   imageMode(CENTER);
-
+  
   await tree.insert(12);
   await tree.insert(7);
   await tree.insert(20);
   await tree.insert(50);
-  await tree.insert(75);
-  await tree.insert(62);
-  await tree.insert(100);
-  await tree.insert(125);
-  await tree.insert(82);
+  await tree.insert(15);
+  await tree.insert(1);
+  await tree.insert(10);
+
+  arrowTest = new Arrow(treeNodes[0], treeNodes[1])
+
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
+  // await tree.remove(tree.root);
   
-  tree.inOrder()
   console.log(edges)
 }
 
@@ -525,15 +639,22 @@ function draw() {
   for(edge of edges){
     edge.draw()
   }
+  
+  for(arrow of arrows){
+    arrow.draw()
+  }
+
   for(node of treeNodes){
     node.draw()
   }
   sNode.draw()
+  
 }
 
 function mousePressed() {
   console.log(mouseX, mouseY);
-  //tree.inOrder();
+  
+  
 }
 
 

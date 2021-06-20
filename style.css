@@ -1,5 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
+/* FOR PALETTE ONLY, NOT FOR USE */
+.colors {
+  /*DARK*/
+  color: #29597e; /* 41, 89, 126 */
+  color: #7e5729; /* 126, 87, 41 */
+  color: #7e2929; /* 126, 41, 41 */
+  color: #67297e; /* 103, 41, 126 */
+  color: #477e29; /* 71, 126, 41 */
+  color: #797e29; /* 121, 126, 41 */
+
+  /*LIGHT*/
+  color: #3e83b0; /* 62, 131, 176 */
+  color: #b0803e; /* 176, 128, 62 */
+  color: #b03e3e; /* 176, 62, 62 */
+  color: #953eb0; /* 149, 62, 176 */
+  color: #6ab03e; /* 106, 176, 62 */
+  color: #abb03e; /* 171, 176, 62 */
+}
+
 text {
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
@@ -18,6 +37,10 @@ html, body {
     background-color: #171e24;
     font-family: 'Open Sans', sans-serif;
 }
+body::-webkit-scrollbar {
+  display: none;
+}
+
 canvas {
     display: block;
     position: relative;
@@ -74,6 +97,22 @@ form {
   height: 100%;
 }
 
+.num_field {
+  background-color:#29597e;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight:normal;
+  padding: 1.3vh;
+  margin: 3px;
+  height: 100%;
+  width: 50px;
+}
+
 h1 {
   font-family: 'Open Sans', sans-serif;
   font-weight: bolder;
@@ -87,7 +126,8 @@ p, a {
   font-family: 'Open Sans', sans-serif;
   font-size: 12px;
   color: white;
-  margin: 10px
+  margin-left: 2px;
+  margin-right: 5px;
 }
 
 .controls {
