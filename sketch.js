@@ -30,11 +30,12 @@ class Arrow {
     this.endxFin = end.x
     this.endyFin = end.y
     this.offsetY = boxSize/2
+    this.drawArrow()
   }
 
   draw(){
-    this.endx = this.endx + (this.endxFin - this.endx) * easing
-    this.endy = this.endy + (this.endyFin - this.endy) * easing
+    //this.endx = this.endx + (this.endxFin - this.endx) * easing
+    //this.endy = this.endy + (this.endyFin - this.endy) * easing
     stroke(YELLOW)
     fill(YELLOW)
     strokeWeight(3);
@@ -47,7 +48,17 @@ class Arrow {
     triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
     pop();
   }
-  
+  async drawArrow() {
+
+    for(let i = 0; i <= (150 / animSpeed); i++){
+      this.endx = this.endx + (this.endxFin - this.endx) * easing
+      this.endy = this.endy + (this.endyFin - this.endy) * easing
+      await sleep(2)
+    }
+    
+    this.endx = this.endxFin
+    this.endy = this.endyFin
+  }
 }
 
 class Edge {
@@ -121,8 +132,6 @@ class searchNode {
     this.y = newY
   }
 }
-
-//VARS FOR BINARY SEARCH TREE
 
 class BinarySearchTree {
   constructor() {
@@ -616,6 +625,27 @@ class BinarySearchTree {
   }
 }
 
+//DOM VARIABLES
+var buttonControls = document.getElementsByClassName("buttonControls");
+
+//GENERAL FUNCTIONS
+
+function disableButtonControls() {
+  for(button of buttonControls){
+    button.disabled = true
+  }
+}
+
+function enableButtonControls() {
+  for(button of buttonControls){
+    button.disabled = false
+  }
+  statusText = "Standby"
+}
+
+
+
+//BUTTON FUNCTIONS
 function handleAdj() { 
   console.log(tree.root)
   console.log("PUNTA KA DITO POTEK")
@@ -626,66 +656,82 @@ function handleAdj() {
   tree.adjustTree(tree.root, treeWidthDist/4, 0 + treeHeightOffset, treeWidthDist/2);
 }
 
-// function handleHeightAdj() {
-//   var output = parseInt(document.getElementById("heightDistAdj").value)
-//   treeHeightDist = output
-//   console.log(document.getElementById("heightDistAdj").value)
-// }
+async function handleInsert() { 
 
-// function handleWidthAdj() {
-//   var output = parseInt(document.getElementById("widthDistAdj").value)
-//   treeWidthDist = windowWidth + (-1 * output)
-  
-// }
+  disableButtonControls()
 
-
-function handleInsert() { 
-  //stringValue = this.value()
-  //document.getElementById("myText").value = "Johnny Bravo";
   let element = document.getElementById("functionElement").value
   if(isNaN(element) || element == "" || element == null) {
+    enableButtonControls()
     return
   }
-  tree.insert(parseInt(element))
+  statusText = "Running: Insert(" + parseInt(element) + ")"
+  await tree.insert(parseInt(element))
+
+  enableButtonControls()
 }
 
-function handleSearch() { 
-  //stringValue = this.value()
-  //document.getElementById("myText").value = "Johnny Bravo";
+async function handleSearch() { 
+
+  disableButtonControls()
   let element = document.getElementById("functionElement").value
   if(isNaN(element) || element == "" || element == null) {
+    enableButtonControls()
     return
   }
+  statusText = "Running: Search(" + parseInt(element) + ")"
   tree.search(parseInt(element))
+
+  enableButtonControls()
 }
 
-function handleRemove() { 
-  //stringValue = this.value()
-  //document.getElementById("myText").value = "Johnny Bravo";
+async function handleRemove() { 
+
+  disableButtonControls()
   
   let element = document.getElementById("functionElement").value
   console.log(element == "")
   if(isNaN(element)){
+    enableButtonControls()
     return
   }
-
+  
   if(element == "" || element == null) {
-    tree.remove(tree.root)
+    await tree.remove(tree.root)
+    statusText = "Running: Remove tree.root"
+    enableButtonControls()
     return
   }
+  statusText = "Running: Remove(" + parseInt(element) + ")"
   tree.remove(parseInt(element))
+  enableButtonControls()
 }
 
-function handleInorder() { 
-  tree.inOrder();
+async function handleInorder() { 
+  if(tree.root != null) {
+    disableButtonControls()
+    statusText = "Running: Inorder Traversal"
+    await tree.inOrder()
+    enableButtonControls()
+  }
 }
 
-function handlePreorder() { 
-  tree.preOrder();
+async function handlePreorder() { 
+  if(tree.root != null) {
+    disableButtonControls()
+    statusText = "Running: Preorder Traversal"
+    await tree.preOrder()
+    enableButtonControls()
+  }
 }
 
-function handlePostorder() { 
-  tree.postOrder();
+async function handlePostorder() { 
+  if(tree.root != null) {
+    disableButtonControls()
+    statusText = "Running: Postorder Traversal"
+    await tree.postOrder()
+    enableButtonControls()
+  }
 }
 
 document.getElementById("animSlider").innerHTML = document.getElementById("myRange").value
@@ -701,6 +747,8 @@ function handleSliderAnimChange() {
 }
 
 async function handleLoadExample() {
+  disableButtonControls()
+  statusText = "Load Example: Insert -> (25,20,36,10,22,30,40,28,5,12,38,48)"
   await tree.insert(25);
   await tree.insert(20);
   await tree.insert(36);
@@ -713,8 +761,10 @@ async function handleLoadExample() {
   await tree.insert(12);
   await tree.insert(38);
   await tree.insert(48);
+  enableButtonControls()
 }
 
+//GENERAL VARIABLES
 var prevNode = null
 var curTraversal = []
 var treeNodes = []
@@ -722,7 +772,9 @@ var edges = []
 var arrows = []
 var sNode;
 var prevArrow, tempArrow;
+var statusText = "Standby"
 
+//IMAGE VARIABLES
 var search_icon_base, search_icon_notFound, search_icon_found, traversal_icon;
 function preload() {
   search_icon_base = loadImage('assets/search_1.png');
@@ -762,6 +814,7 @@ async function setup() {
 
 function draw() {
   background(28, 42, 53);
+  textAlign(CENTER, CENTER)
   for(edge of edges){
     edge.draw()
   }
@@ -775,6 +828,9 @@ function draw() {
   }
   sNode.draw()
   
+  fill(255)
+  textAlign(LEFT, TOP)
+  text(statusText, 10, 10)
 }
 
 function mousePressed() {

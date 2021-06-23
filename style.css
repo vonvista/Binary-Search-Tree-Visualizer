@@ -142,14 +142,28 @@ p, a {
   display: inline-flex;
   background-color: #171e24;
   align-items:center;
-  margin: 5px 30px 5px;
+  margin: 0px 30px 5px;
+  padding: 0px;
+}
+
+.selection {
+  display: inline-flex;
+  background-color: #171e24;
+  align-items:center;
+  margin: 0px 30px 0px;
   padding: 0px;
 }
 
 .controlsParent {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
+}
+
+.selectionParent {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0px;
 }
 
 #sketchHolder {
