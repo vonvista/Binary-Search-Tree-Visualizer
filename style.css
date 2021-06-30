@@ -17,7 +17,14 @@
   color: #953eb0; /* 149, 62, 176 */
   color: #6ab03e; /* 106, 176, 62 */
   color: #abb03e; /* 171, 176, 62 */
+
+  color: rgb(106, 179, 235);
 }
+
+/* body::-webkit-scrollbar {
+  display: none;
+} */
+
 
 img {
   image-rendering: -moz-crisp-edges; /* Firefox */
@@ -40,18 +47,16 @@ svg {
 
 
 html, body {
-    margin: 0;
-    padding: 0;
-    background-color: #171e24;
-    font-family: 'Open Sans', sans-serif;
-}
-body::-webkit-scrollbar {
-  display: none;
+  margin: 0;
+  padding: 0;
+  background-color: #171e24;
+  font-family: 'Open Sans', sans-serif;
+  height: 100%;
 }
 
 canvas {
-    display: block;
-    position: relative;
+  display: block;
+  position: relative;
 }
 
 button {
@@ -68,6 +73,26 @@ button {
   font-family: 'Open Sans', sans-serif;
   font-weight:normal;
   margin: 3px;
+}
+
+h1 {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bolder;
+
+  color: white;
+  margin: 10px 30px 5px;
+
+}
+
+.headerContainer {
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 10px 2px 0px;
+  font-size: 12px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight:bold;
+  padding: 1vh;
+  background-color:#115153;
 }
 
 .controlsTitle {
@@ -103,6 +128,7 @@ form {
   padding: 1.3vh;
   margin: 3px;
   height: 100%;
+  width: 60px;
 }
 
 .num_field {
@@ -121,14 +147,7 @@ form {
   width: 50px;
 }
 
-h1 {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: bolder;
 
-  color: white;
-  margin: 10px 30px 5px;
-
-}
 
 p, a {
   font-family: 'Open Sans', sans-serif;
@@ -157,7 +176,7 @@ p, a {
 .controlsParent {
   display: flex;
   flex-direction: column;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 .selectionParent {

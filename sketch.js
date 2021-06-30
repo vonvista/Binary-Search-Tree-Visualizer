@@ -96,8 +96,8 @@ class Node {
     text(this.value, this.x, this.y + boxSize/2)
   }
   async movePos(newX, newY) {
-    console.log("OLD X: " + this.x + ",Y: " + this.y)
-    console.log("X: " + newX + ",Y: " + newY)
+    // console.log("OLD X: " + this.x + ",Y: " + this.y)
+    // console.log("X: " + newX + ",Y: " + newY)
     for(let i = 0; i <= (150 / animSpeed); i++){
       this.x = this.x + (newX - this.x) * easing
       this.y = this.y + (newY - this.y) * easing
@@ -142,7 +142,7 @@ class BinarySearchTree {
     /* insert */
   async insert(value) {
     this.visReset()
-    console.log(this);
+    // console.log(this);
     // create node from value
     var node = new Node(value);
     treeNodes.push(node)
@@ -156,19 +156,19 @@ class BinarySearchTree {
 
     // if the tree's root is null, set the root to the new node
     if (this.root == null) {
-      console.log("Root is null");
+      // console.log("Root is null");
       this.root = node;
       await node.movePos(curWidth/2, curHeight);
       return
     }
 
-    console.log("+++++++++++++++++++")
-    console.log("value:" + value)
+    // console.log("+++++++++++++++++++")
+    // console.log("value:" + value)
     while (current) {
       curHeight += treeHeightDist
       curWidth /= 2
-      console.log(treeHeightDist)
-      console.log(curHeight)
+      // console.log(treeHeightDist)
+      // console.log(curHeight)
 
       // If tree contains value return
       if (current.value == value) {
@@ -178,10 +178,10 @@ class BinarySearchTree {
       }
       // value is less than current.value
       else if (value < current.value) {
-        console.log("LEFT")
+        // console.log("LEFT")
         
         if (current.children[0] == null || current.children[0].value == "e") {
-          console.log("NASA LEFT")
+          // console.log("NASA LEFT")
           
           current.children[0] = node;
           var newEdge = new Edge(current, current.children[0])
@@ -195,7 +195,7 @@ class BinarySearchTree {
       }
       // value is greater than current.value
       else {
-        console.log("RIGHT")
+        // console.log("RIGHT")
         if (current.children[1] == null || current.children[1].value == "e") {
           current.children[1] = node;
           var newEdge = new Edge(current, current.children[1])
@@ -215,7 +215,7 @@ class BinarySearchTree {
   async search(data) 
   { 
     this.visReset()
-    console.log("NANDITO")
+    // console.log("NANDITO")
     sNode.image = search_icon_base
     await this.searchNode(this.root, data);
   } 
@@ -238,7 +238,7 @@ class BinarySearchTree {
     }
 
     await sNode.movePos(node.x, node.y + boxSize/2 + 40)
-    console.log(node.value);    
+    // console.log(node.value);    
   
     // if data to be delete is less than  
     // roots data then move to left subtree 
@@ -275,13 +275,13 @@ class BinarySearchTree {
     // if left of a node is null 
     // then it must be minimum node 
     if(node.children[0] == null){
-      console.log("ITO YUNG MIN NODE");
-      console.log(node);
+      // console.log("ITO YUNG MIN NODE");
+      // console.log(node);
 
       return node; 
     }
     else {
-      console.log("DITO")
+      // console.log("DITO")
 
       return this.findMinNode(node.children[0]); 
     }
@@ -293,7 +293,7 @@ class BinarySearchTree {
     this.root = await this.removeNode(this.root, data, treeWidthDist/2, 0 + treeHeightOffset); 
     
     var temp = await this.adjustTree(this.root, treeWidthDist/4, 0 + treeHeightOffset, treeWidthDist/2);
-    console.log("DONE");
+    // console.log("DONE");
     return 
   } 
 
@@ -305,8 +305,8 @@ class BinarySearchTree {
   { 
     // if the root is null then tree is  
     // empty 
-    console.log(curWidth)
-    console.log(curHeight)
+    // console.log(curWidth)
+    // console.log(curHeight)
     if(typeof(node) == "undefined" || node == null) {
       return node; 
     }
@@ -337,12 +337,12 @@ class BinarySearchTree {
   
     else
     { 
-      console.log(node);
+      // console.log(node);
 
       if(node.children[0] == null && node.children[1] == null) 
       { 
 
-        console.log("BOTH NULL");
+        // console.log("BOTH NULL");
         
         for(let [index, findNode] of treeNodes.entries()){
           if(findNode == node){
@@ -356,7 +356,7 @@ class BinarySearchTree {
           //   edges.splice(index, 1)
           // }
           if(node == edge.endnode){
-            console.log(edge)
+            // console.log(edge)
             edges.splice(index, 1)
           }
         }
@@ -367,7 +367,7 @@ class BinarySearchTree {
       //deleting node with one children 
       else if(node.children[0] == null) 
       { 
-        console.log("LEFT CHILD YUNG NULL");
+        // console.log("LEFT CHILD YUNG NULL");
         
         // FOR VISUALIZER
         for(let [index, findNode] of treeNodes.entries()){
@@ -378,18 +378,18 @@ class BinarySearchTree {
 
         for(let [index, edge] of edges.entries()){
           if(node == edge.startnode){
-            console.log(edge)
+            // console.log(edge)
             edges.splice(index, 1)
           }
           if(node == edge.endnode){
-            console.log(edge)
+            // console.log(edge)
             edge.endnode = node.children[1];
           }
         }
         
         //var temp = node
         node = node.children[1]; 
-        console.log(this.root)
+        // console.log(this.root)
         //temp = null;
 
         return node; 
@@ -397,7 +397,7 @@ class BinarySearchTree {
         
       else if(node.children[1] == null) 
       { 
-        console.log("RIGHT CHILD YUNG NULL");
+        // console.log("RIGHT CHILD YUNG NULL");
 
         // FOR VISUALIZER
         for(let [index, findNode] of treeNodes.entries()){
@@ -408,11 +408,11 @@ class BinarySearchTree {
 
         for(let [index, edge] of edges.entries()){
           if(node == edge.startnode){
-            console.log(edge)
+            // console.log(edge)
             edges.splice(index, 1)
           }
           if(node == edge.endnode){
-            console.log(edge)
+            // console.log(edge)
             edge.endnode = node.children[0];
           }
         }
@@ -421,7 +421,7 @@ class BinarySearchTree {
 
         return node; 
       } 
-      console.log("MAY 2 CHILDREN")
+      // console.log("MAY 2 CHILDREN")
       // Deleting node with two children 
       // minumum node of the rigt subtree 
       // is stored in aux 
@@ -435,18 +435,18 @@ class BinarySearchTree {
 
       for(let [index, edge] of edges.entries()){
         if(aux == edge.startnode){
-          console.log(edge)
+          // console.log(edge)
           edges.splice(index, 1)
         }
         if(aux == edge.endnode){
-          console.log(edge)
+          // console.log(edge)
           edge.endnode = node.children[1];
         }
       }
 
       for(let [index, findNode] of treeNodes.entries()){
         if(findNode == aux){
-          console.log("FOUNDED")
+          // console.log("FOUNDED")
           treeNodes.splice(index, 1)
         }
       }
@@ -458,12 +458,12 @@ class BinarySearchTree {
       
       //node = aux;
 
-      console.log(aux.value)
+      // console.log(aux.value)
       node.value = aux.value; 
       node.children[1] = await this.removeNode(node.children[1], aux.value, 0, 0); 
 
       
-      console.log(node)
+      // console.log(node)
       
       return node; 
     } 
@@ -471,11 +471,11 @@ class BinarySearchTree {
 
   async adjustTree(root, curWidth, curHeight, prevX){
     this.visReset()
-    console.log(curHeight)
+    // console.log(curHeight)
     if (root != null) {
       root.movePos(prevX + treeWidthOffset, curHeight)
-      console.log(root.value);
-      console.log(curWidth + curWidth/2)
+      // console.log(root.value);
+      // console.log(curWidth + curWidth/2)
   
       this.adjustTree(root.children[0], curWidth/2, curHeight + treeHeightDist, prevX - curWidth);
   
@@ -536,7 +536,7 @@ class BinarySearchTree {
         root.color = LIGHT_YELLOW;
       }
       
-      console.log(root.value);
+      // console.log(root.value);
 
 
       if(prevNode == null){
@@ -568,7 +568,7 @@ class BinarySearchTree {
         root.color = LIGHT_YELLOW;
       }
       
-      console.log(root.value);
+      // console.log(root.value);
 
 
       if(prevNode == null){
@@ -608,7 +608,7 @@ class BinarySearchTree {
         root.color = LIGHT_YELLOW;
       }
       
-      console.log(root.value);
+      // console.log(root.value);
 
 
       if(prevNode == null){
@@ -647,8 +647,8 @@ function enableButtonControls() {
 
 //BUTTON FUNCTIONS
 function handleAdj() { 
-  console.log(tree.root)
-  console.log("PUNTA KA DITO POTEK")
+  // console.log(tree.root)
+  // console.log("PUNTA KA DITO POTEK")
   treeHeightDist = parseInt(document.getElementById("heightDistAdj").value)
   treeWidthDist = windowWidth + (-1 * parseInt(document.getElementById("widthDistAdj").value))
   // console.log(document.getElementById("heightDistAdj").value)
@@ -690,7 +690,7 @@ async function handleRemove() {
   disableButtonControls()
   
   let element = document.getElementById("functionElement").value
-  console.log(element == "")
+  // console.log(element == "")
   if(isNaN(element)){
     enableButtonControls()
     return
@@ -787,10 +787,10 @@ async function setup() {
   //createCanvas(400, 400);
   let cnv = createCanvas(windowWidth, windowHeight - controlsHeight);
   cnv.parent("sketchHolder");
-  console.log(cnv)
+  // console.log(cnv)
   
   treeWidthDist += windowWidth
-  console.log(treeWidthDist)
+  // console.log(treeWidthDist)
 
   sNode = new searchNode()
   tree = new BinarySearchTree()
@@ -809,7 +809,7 @@ async function setup() {
   // await tree.insert(1);
   // await tree.insert(10);
   
-  console.log(edges)
+  // console.log(edges)
 }
 
 function draw() {
@@ -834,7 +834,7 @@ function draw() {
 }
 
 function mousePressed() {
-  console.log(mouseX, mouseY);
+  // console.log(mouseX, mouseY);
   
 }
 
