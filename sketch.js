@@ -1,4 +1,5 @@
 var animSpeed = 3
+p5.disableFriendlyErrors = true; // disables FES
 
 const easing = 0.05 * animSpeed
 const boxSize = 30;
@@ -781,6 +782,9 @@ function preload() {
   search_icon_notFound = loadImage('assets/search_2.png');
   search_icon_found = loadImage('assets/search_3.png');
   traversal_icon = loadImage('assets/traverse_1.png');
+
+
+  fontRegular = loadFont('fonts/OpenSans-Semibold.ttf');
 }
 
 async function setup() {
@@ -800,6 +804,9 @@ async function setup() {
   rectMode(CENTER)
   textAlign(CENTER, CENTER)
   imageMode(CENTER);
+  pixelDensity(displayDensity());
+
+  // textFont(fontRegular)
   
   // await tree.insert(12);
   // await tree.insert(7);
@@ -840,4 +847,5 @@ function mousePressed() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  pixelDensity(displayDensity());
 }
