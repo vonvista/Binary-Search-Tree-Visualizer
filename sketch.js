@@ -787,6 +787,7 @@ function preload() {
 }
 
 async function setup() {
+  frameRate(30)
   //createCanvas(400, 400);
   let cnv = createCanvas(windowWidth, windowHeight - controlsHeight);
   cnv.parent("sketchHolder");
