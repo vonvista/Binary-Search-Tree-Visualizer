@@ -777,14 +777,13 @@ var statusText = "Standby"
 
 //IMAGE VARIABLES
 var search_icon_base, search_icon_notFound, search_icon_found, traversal_icon;
+
 function preload() {
   search_icon_base = loadImage('assets/search_1.png');
   search_icon_notFound = loadImage('assets/search_2.png');
   search_icon_found = loadImage('assets/search_3.png');
   traversal_icon = loadImage('assets/traverse_1.png');
 
-
-  fontRegular = loadFont('fonts/OpenSans-Semibold.ttf');
 }
 
 async function setup() {
