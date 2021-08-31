@@ -787,7 +787,6 @@ function preload() {
 }
 
 async function setup() {
-  frameRate(30)
   //createCanvas(400, 400);
   let cnv = createCanvas(windowWidth, windowHeight - controlsHeight);
   cnv.parent("sketchHolder");
@@ -804,7 +803,7 @@ async function setup() {
   rectMode(CENTER)
   textAlign(CENTER, CENTER)
   imageMode(CENTER);
-  pixelDensity(displayDensity());
+  pixelDensity(1);
 
   // textFont(fontRegular)
   
@@ -847,5 +846,5 @@ function mousePressed() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  pixelDensity(displayDensity());
+  pixelDensity(1);
 }
