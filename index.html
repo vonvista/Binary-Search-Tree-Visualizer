@@ -50,14 +50,14 @@
         <button onClick = handleRemove() class="buttonControls red-color">Delete</button>
 
         <p class="bump-left">Adjustments </p>
-
+        
         <img src="assets/height.png" height=20>
         <input type="number" id="heightDistAdj" placeholder="Input value"
-        class="num_field violet-color" min="1" max="100" value="80">
+        class="num_field violet-color" onKeyDown="return false" min="0" max="100" value="80" step="5">
 
         <img src="assets/width.png" height=20>
         <input type="number" id="widthDistAdj" placeholder="Input value"
-        class="num_field violet-color" min="0" max="1000" value="40" step="10"></input>
+        class="num_field violet-color" onKeyDown="return false" min="0" max="1000" value="40" step="10"></input>
 
         <button onClick = "handleAdj()" class="buttonControls violet-color">Adjust</button>
       </div>

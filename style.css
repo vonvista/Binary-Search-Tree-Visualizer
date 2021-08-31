@@ -75,6 +75,7 @@ button {
   font-family: 'Open Sans', sans-serif;
   font-weight:normal;
   margin: 3px;
+  white-space: nowrap;
 
   transition: all 0.2s ease;
 }
