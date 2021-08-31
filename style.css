@@ -21,6 +21,8 @@
   color: rgb(106, 179, 235);
 }
 
+
+
 /* body::-webkit-scrollbar {
   display: none;
 } */
@@ -73,6 +75,20 @@ button {
   font-family: 'Open Sans', sans-serif;
   font-weight:normal;
   margin: 3px;
+
+  transition: all 0.2s ease;
+}
+
+button:active {
+  animation-direction: alternate;
+  transform: scale(0.9);
+  transition: transform 0.1s ease;
+}
+
+button:disabled {
+  animation-direction: alternate;
+  opacity: 0.5;
+  transition: opacity 0.1s ease;
 }
 
 h1 {
@@ -81,7 +97,11 @@ h1 {
   flex-shrink: 0;
   color: white;
   margin: 0px 5px 5px 30px;
+}
 
+#subMainTitle {
+  font-weight: normal; 
+  font-size: 14px;
 }
 
 .headerContainer {
@@ -102,7 +122,6 @@ h1 {
 }
 
 form {
-  background-color:#29597e;
   border: none;
   color: white;
   padding: 1.7vh;
@@ -116,7 +135,6 @@ form {
 }
 
 .input_field {
-  background-color:#29597e;
   border: none;
   color: white;
   text-align: center;
@@ -125,14 +143,13 @@ form {
   font-size: 12px;
   font-family: 'Open Sans', sans-serif;
   font-weight:normal;
-  padding: 1.3vh;
-  height: 100% - 1.3vh;
+  padding: 10px;
+  height: 100% - 10px;
   width: 60px;
   margin: 3px;
 }
 
 .num_field {
-  background-color:#29597e;
   border: none;
   color: white;
   text-align: center;
@@ -141,9 +158,9 @@ form {
   font-size: 12px;
   font-family: 'Open Sans', sans-serif;
   font-weight:normal;
-  padding: 1.3vh;
+  padding: 10px;
   margin: 3px;
-  height: 100% - 1.3vh;
+  height: 100% - 10px;
   width: 50px;
 }
 
@@ -257,4 +274,32 @@ p {
   height: 25px;
   background-color:#7e2929;
   cursor: pointer;
+}
+
+.red-color {
+  background-color: #7e2929;
+}
+
+.orange-color {
+  background-color: #7e5729;
+}
+
+.yellow-color {
+  background-color: #797e29;
+}
+
+.green-color {
+  background-color: #477e29;
+}
+
+.blue-color {
+  background-color: #29597e;
+}
+
+.violet-color {
+  background-color: #67297e;
+}
+
+.bump-left {
+  margin-left:15px;
 }

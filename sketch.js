@@ -97,8 +97,6 @@ class Node {
     text(this.value, this.x, this.y + boxSize/2)
   }
   async movePos(newX, newY) {
-    // console.log("OLD X: " + this.x + ",Y: " + this.y)
-    // console.log("X: " + newX + ",Y: " + newY)
     for(let i = 0; i <= (150 / animSpeed); i++){
       this.x = this.x + (newX - this.x) * easing
       this.y = this.y + (newY - this.y) * easing
@@ -121,8 +119,6 @@ class searchNode {
   }
 
   async movePos(newX, newY) {
-    // console.log("OLD X: " + this.x + ",Y: " + this.y)
-    // console.log("X: " + newX + ",Y: " + newY)
     for(let i = 0; i <= (150 / animSpeed); i++){
       this.x = this.x + (newX - this.x) * easing
       this.y = this.y + (newY - this.y) * easing
@@ -143,8 +139,6 @@ class BinarySearchTree {
     /* insert */
   async insert(value) {
     this.visReset()
-    // console.log(this);
-    // create node from value
     var node = new Node(value);
     treeNodes.push(node)
     
@@ -157,19 +151,14 @@ class BinarySearchTree {
 
     // if the tree's root is null, set the root to the new node
     if (this.root == null) {
-      // console.log("Root is null");
       this.root = node;
       await node.movePos(curWidth/2, curHeight);
       return
     }
 
-    // console.log("+++++++++++++++++++")
-    // console.log("value:" + value)
     while (current) {
       curHeight += treeHeightDist
       curWidth /= 2
-      // console.log(treeHeightDist)
-      // console.log(curHeight)
 
       // If tree contains value return
       if (current.value == value) {
@@ -179,10 +168,8 @@ class BinarySearchTree {
       }
       // value is less than current.value
       else if (value < current.value) {
-        // console.log("LEFT")
         
         if (current.children[0] == null || current.children[0].value == "e") {
-          // console.log("NASA LEFT")
           
           current.children[0] = node;
           var newEdge = new Edge(current, current.children[0])
@@ -194,9 +181,7 @@ class BinarySearchTree {
         await node.movePos(current.x - curWidth/2, curHeight - 40);
         current = current.children[0];
       }
-      // value is greater than current.value
       else {
-        // console.log("RIGHT")
         if (current.children[1] == null || current.children[1].value == "e") {
           current.children[1] = node;
           var newEdge = new Edge(current, current.children[1])
@@ -216,7 +201,6 @@ class BinarySearchTree {
   async search(data) 
   { 
     this.visReset()
-    // console.log("NANDITO")
     sNode.image = search_icon_base
     await this.searchNode(this.root, data);
   } 
@@ -226,15 +210,14 @@ class BinarySearchTree {
   // it recur over the tree to find the 
   // data and removes it 
 
-
   async searchNode(node, key) 
   { 
     // if the root is null then tree is  
     // empty 
     if(node == null) {
       sNode.image = search_icon_notFound
-      await sleep(2000)
-      sNode.movePos(windowWidth/2, -60);
+      await sleep(1000)
+      await sNode.movePos(windowWidth/2, -60);
       return null; 
     }
 
@@ -249,7 +232,7 @@ class BinarySearchTree {
         sNode.image = search_icon_notFound
         return;
       }
-      this.searchNode(node.children[0], key); 
+      await this.searchNode(node.children[0], key); 
       return; 
     } 
   
@@ -259,7 +242,7 @@ class BinarySearchTree {
         sNode.image = search_icon_notFound
         return;
       }
-      this.searchNode(node.children[1], key); 
+      await this.searchNode(node.children[1], key); 
       return; 
     } 
 
@@ -387,18 +370,14 @@ class BinarySearchTree {
             edge.endnode = node.children[1];
           }
         }
-        
-        //var temp = node
+      
         node = node.children[1]; 
-        // console.log(this.root)
-        //temp = null;
 
         return node; 
       } 
         
       else if(node.children[1] == null) 
       { 
-        // console.log("RIGHT CHILD YUNG NULL");
 
         // FOR VISUALIZER
         for(let [index, findNode] of treeNodes.entries()){
@@ -409,11 +388,9 @@ class BinarySearchTree {
 
         for(let [index, edge] of edges.entries()){
           if(node == edge.startnode){
-            // console.log(edge)
             edges.splice(index, 1)
           }
           if(node == edge.endnode){
-            // console.log(edge)
             edge.endnode = node.children[0];
           }
         }
@@ -422,7 +399,7 @@ class BinarySearchTree {
 
         return node; 
       } 
-      // console.log("MAY 2 CHILDREN")
+
       // Deleting node with two children 
       // minumum node of the rigt subtree 
       // is stored in aux 
@@ -436,35 +413,24 @@ class BinarySearchTree {
 
       for(let [index, edge] of edges.entries()){
         if(aux == edge.startnode){
-          // console.log(edge)
           edges.splice(index, 1)
         }
         if(aux == edge.endnode){
-          // console.log(edge)
           edge.endnode = node.children[1];
         }
       }
 
       for(let [index, findNode] of treeNodes.entries()){
         if(findNode == aux){
-          // console.log("FOUNDED")
           treeNodes.splice(index, 1)
         }
       }
       
-      // console.log(aux);
-      // delPrevNode.children[delPrevDir] = aux;
-      // console.log(delPrevNode.children[delPrevDir]);
-      // console.log(delPrevNode);
-      
-      //node = aux;
-
-      // console.log(aux.value)
       node.value = aux.value; 
       node.children[1] = await this.removeNode(node.children[1], aux.value, 0, 0); 
 
       
-      // console.log(node)
+
       
       return node; 
     } 
@@ -472,11 +438,9 @@ class BinarySearchTree {
 
   async adjustTree(root, curWidth, curHeight, prevX){
     this.visReset()
-    // console.log(curHeight)
+
     if (root != null) {
       root.movePos(prevX + treeWidthOffset, curHeight)
-      // console.log(root.value);
-      // console.log(curWidth + curWidth/2)
   
       this.adjustTree(root.children[0], curWidth/2, curHeight + treeHeightDist, prevX - curWidth);
   
@@ -632,12 +596,14 @@ var buttonControls = document.getElementsByClassName("buttonControls");
 //GENERAL FUNCTIONS
 
 function disableButtonControls() {
+  console.log("DISABLE")
   for(button of buttonControls){
     button.disabled = true
   }
 }
 
 function enableButtonControls() {
+  console.log("ENABLE")
   for(button of buttonControls){
     button.disabled = false
   }
@@ -648,12 +614,8 @@ function enableButtonControls() {
 
 //BUTTON FUNCTIONS
 function handleAdj() { 
-  // console.log(tree.root)
-  // console.log("PUNTA KA DITO POTEK")
   treeHeightDist = parseInt(document.getElementById("heightDistAdj").value)
   treeWidthDist = windowWidth + (-1 * parseInt(document.getElementById("widthDistAdj").value))
-  // console.log(document.getElementById("heightDistAdj").value)
-  // console.log(treeWidthDist/4)
   tree.adjustTree(tree.root, treeWidthDist/4, 0 + treeHeightOffset, treeWidthDist/2);
 }
 
@@ -681,8 +643,8 @@ async function handleSearch() {
     return
   }
   statusText = "Running: Search(" + parseInt(element) + ")"
-  tree.search(parseInt(element))
-
+  await tree.search(parseInt(element))
+  
   enableButtonControls()
 }
 
@@ -691,7 +653,6 @@ async function handleRemove() {
   disableButtonControls()
   
   let element = document.getElementById("functionElement").value
-  // console.log(element == "")
   if(isNaN(element)){
     enableButtonControls()
     return
