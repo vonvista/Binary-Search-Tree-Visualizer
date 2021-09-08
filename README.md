@@ -1,5 +1,13 @@
 # Binary Search Tree Visualizer
-Binary Search Tree Visualizer / Simulation 
--complete functions of insert, search, and delete
--preorder, inorder, and postorder traversal
--adjustable height distance and width distance of nodes
+
+## Description
+
+A web application visualizing the Binary Search Tree abstract data structure (ADT)
+
+## Features
+
+BST Functions of Insertion, Searching, and Deletion
+
+![Insert Function]()
+
+Inorder, Preorder, and Postorder Traversals
