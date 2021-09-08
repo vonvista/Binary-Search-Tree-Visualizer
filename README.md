@@ -2,7 +2,7 @@
 
 [https://vonvista.github.io/Binary-Search-Tree-Visualizer/](https://vonvista.github.io/Binary-Search-Tree-Visualizer/)
 
-![Binary Search Tree Visualizer GIF]("https://vonvista.github.io/Binary-Search-Tree-Visualizer/assets/BSTV Gif.gif")
+![Binary Search Tree Visualizer GIF](https://vonvista.github.io/Binary-Search-Tree-Visualizer/assets/BSTV%20Gif.gif)
 
 ## Description
 
