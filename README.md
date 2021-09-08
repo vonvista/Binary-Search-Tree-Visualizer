@@ -6,7 +6,7 @@
 
 ## Description
 
-A web application visualizing the Binary Search Tree abstract data structure (ADT). Built using Javascript and p5.js library for visuals
+A web application visualizing the Binary Search Tree ADT (Abstract Data Structure). Built using Javascript and p5.js library for visuals
 
 ## Features
 
