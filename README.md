@@ -1,6 +1,6 @@
 # Binary Search Tree Visualizer
 
-#### [https://vonvista.github.io/Binary-Search-Tree-Visualizer/](https://vonvista.github.io/Binary-Search-Tree-Visualizer/)
+Visit the project here: [https://vonvista.github.io/Binary-Search-Tree-Visualizer/](https://vonvista.github.io/Binary-Search-Tree-Visualizer/)
 
 ![Binary Search Tree Visualizer GIF](https://vonvista.github.io/Binary-Search-Tree-Visualizer/assets/BSTV%20Gif.gif)
 
